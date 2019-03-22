@@ -44,9 +44,7 @@ args
     .option('-u, --usb', 'Include USB devices (those available through libusb)')
     .option('-n, --nordic-usb', 'Include Nordic USB devices (with VendorID 0x1915, if available through libusb)')
     .option('-f, --nordic-dfu', 'Include Nordic USB devices with DFU trigger interface')
-    .option('-g, --segger-usb', 'Include Segger USB devices (with VendorID 0x1366, if available through libusb)')
     .option('-s, --serialport', 'Include serial ports (including USB CDC ACMs)')
-    .option('-j, --jlink', 'Include J-link probes (those available through pc-nrfjprog-js)')
     .option('-b, --find-by-sn [serialNumber]', 'Find device by serial number')
     .option('-a, --list-all', 'List all detected devices')
     .option('-i, --list-all-info', 'List information of all detected devices')
@@ -59,8 +57,8 @@ if (args.debug) {
     debug.enable('device-lister:*');
 }
 
-if (!args.usb && !args.nordicUsb && !args.nordicDfu && !args.seggerUsb &&
-    !args.serialport && !args.jlink && args.error) {
+if (!args.usb && !args.nordicUsb && !args.nordicDfu &&
+    !args.serialport && args.error) {
     console.error('No device traits specified, no devices will be listed!');
     console.error('Run with the --help option to see types of devices to watch for.');
 }
@@ -69,9 +67,7 @@ const lister = new DeviceLister({
     usb: args.usb,
     nordicUsb: args.nordicUsb,
     nordicDfu: args.nordicDfu,
-    seggerUsb: args.seggerUsb,
     serialport: args.serialport,
-    jlink: args.jlink,
 });
 
 lister.on('error', error => {

@@ -34,7 +34,6 @@ import Usb from 'usb';
 import Debug from 'debug';
 import UsbBackend from './usb-backend';
 import SerialPortBackend from './serialport-backend';
-import JlinkBackend from './jlink-backend';
 import ErrorCodes from './util/errors';
 import { getBoardVersion } from './util/board-versions';
 
@@ -61,7 +60,7 @@ export default class DeviceLister extends EventEmitter {
         this._backends = [];
 
         const {
-            usb, nordicUsb, nordicDfu, seggerUsb, jlink, serialport,
+            usb, nordicUsb, nordicDfu, serialport,
         } = traits;
 
         const usbDeviceClosedFilters = {};
@@ -70,11 +69,6 @@ export default class DeviceLister extends EventEmitter {
         if (nordicUsb) {
             usbDeviceClosedFilters.nordicUsb = device => (
                 device.deviceDescriptor.idVendor === NORDIC_VENDOR_ID
-            );
-        }
-        if (seggerUsb) {
-            usbDeviceClosedFilters.seggerUsb = device => (
-                device.deviceDescriptor.idVendor === SEGGER_VENDOR_ID
             );
         }
         if (nordicDfu) {
